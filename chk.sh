@@ -14,15 +14,14 @@ echo "% chk.sh <PASSWORD>"
 exit 1
 fi
 
+# 同じ文字の連続を回避
 FLG1=`echo ${PASSWORD} | grep -E "([0-9A-Z])\1{2,}" | wc -l`
 if [ "${FLG1}" = "1" ]; then
  exit
 fi
 
-#echo ${PASSWORD} > checking &
-
 # HONBAN
-FLG2=`./yokai02 ${PASSWORD} | grep ${TARGET} | wc -l`
+FLG2=`./yokai02 ${PASSWORD} | grep "${TARGET}" | wc -l`
 
 if [ "${FLG2}" = "1" ]; then
  echo "${PASSWORD} ${TARGET}" >> ./output
