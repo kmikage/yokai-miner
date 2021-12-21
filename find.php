@@ -47,7 +47,7 @@ function exec_chk($PASSWORD) {
 function build_password($PASSWORD, $len){
     global $ytoa;
     global $config;
-    if (strlen($PASSWORD) == 14) {
+    if (strlen($PASSWORD) == $config['length']) {
         exec_chk($PASSWORD);
     } else {
         $w=$ytoa[rand(0, count($ytoa) - 1)];
