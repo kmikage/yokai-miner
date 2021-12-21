@@ -41,3 +41,6 @@ $ ./yokai02 HEITAISUGOI
 8F 22 0B EE C1 20 6D 13
 ```
 
+# Thanks.
+`yokai02` Original code.  
+http://i486.mods.jp/ichild/yokaipw
