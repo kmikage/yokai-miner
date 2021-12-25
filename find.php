@@ -13,21 +13,38 @@ $config['view'] = false;
 // チェックの処理をバックグラウンドで実行
 $config['bg']   = true;
 
+// ---
 // コンフィグのロード
 require_once('./config.php');
 
+// ---
 // 辞書の構築
 require_once($config['dicfile']);
 $ytoa=build_ytoa();
 
-// ---
-// First PASSWORD form option.
-$PASSWORD='';
-if ( $argc == 2 ) $PASSWORD=$argv[1];
 
+// ---
+// get Prefix and Suffix
+
+// Prefix
+if (isset($argv[1])) {
+    $input['prefix'] = $argv[1];
+} else {
+    $input['prefix'] = '';
+}
+
+// Suffix
+if (isset($argv[2])) {
+    $input['suffix'] = $argv[2];
+} else {
+    $input['suffix'] = '';
+}
+
+// ---
+// 探索（無限ループ）
 while (true) {
  # kick build password
- build_password($PASSWORD, strlen($PASSWORD));
+ build_password($input['prefix']);
 }
 
 // ---
@@ -46,9 +63,13 @@ function exec_chk($PASSWORD) {
         exec ('./chk.sh '.$PASSWORD );} // for foreground
 }
 
-function build_password($PASSWORD, $len){
+function build_password($PASSWORD){
     global $ytoa;
     global $config;
+    global $input;
+
+    $len = strlen($PASSWORD);
+    
     if (strlen($PASSWORD) == $config['len']) {
         exec_chk($PASSWORD);
     } else {
