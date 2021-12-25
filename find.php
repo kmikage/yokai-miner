@@ -71,12 +71,19 @@ function build_password($password) {
 
     $password_len = strlen($password);
 
-    if ($len == $config['len']) {
+if(true) echo ('Testing -> '. $password .'('. strlen($password) .')'. "\n");
+
+
+    if ($password_len == $config['len']) {
         // 文字数を満たした場合、チェックスクリプトに渡す
         exec_chk($password);
     } else {
         // 辞書からランダムな1つを追加
-        $w=$ytoa[rand(0, count($ytoa) - 1)];
+        while(true) {
+            $w=$ytoa[rand(0, count($ytoa) - 1)];
+            if (($password_len + strlen($w)) <= $config['len']) break;
+        }
+
         $password_new=$password.$w;
         build_password($password_new);
     }
