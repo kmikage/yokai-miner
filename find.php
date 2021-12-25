@@ -71,7 +71,8 @@ function build_password($password) {
 
     $password_len = strlen($password);
 
-if(true) echo ('Testing -> '. $password .'('. strlen($password) .')'. "\n");
+    // for Debug
+    if($config['debug']) echo ('Testing -> '. $password .'('. strlen($password) .')'. "\n");
 
 
     if ($password_len == $config['len']) {

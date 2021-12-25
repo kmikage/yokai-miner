@@ -17,3 +17,6 @@ $config['bg']   = true;
 
 // 辞書ファイル名
 $config['dicfile'] = './dic.php';
+
+// デバッグモード
+$config['debug'] = true;
