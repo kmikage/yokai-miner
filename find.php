@@ -50,38 +50,35 @@ while (true) {
 // ---
 // Functions
 
-function exec_chk($PASSWORD) {
+function exec_chk($password) {
     global $config;
 
     // for Debug.
-    if($config['view']) echo ('Testing -> '. $PASSWORD .'('. strlen($PASSWORD) .')'. "\n");
+    if($config['view']) echo ('Testing -> '. $password .'('. strlen($password) .')'. "\n");
 
-    // Kick checker
     if($config['bg']) {
-        exec ('./chk.sh '.$PASSWORD. '&' ); // for background
+        // background
+        exec ('./chk.sh '.$password. '&' );
     } else {
-        exec ('./chk.sh '.$PASSWORD );} // for foreground
+        // foreground
+        exec ('./chk.sh '.$password );}
 }
 
-function build_password($PASSWORD){
+function build_password($password) {
     global $ytoa;
     global $config;
     global $input;
 
-    $len = strlen($PASSWORD);
-    
-    if (strlen($PASSWORD) == $config['len']) {
-        exec_chk($PASSWORD);
-    } else {
-        $w=$ytoa[rand(0, count($ytoa) - 1)];
-        $PASSWORDn=$PASSWORD.$w;
-        build_password($PASSWORDn, $len + 1);
+    $password_len = strlen($password);
 
-    /*** 総当たり用
-    foreach ($ytoa as $w) {
-        $PASSWORDn=$PASSWORD.$w;
-        build_password($PASSWORDn, $len + 1);
+    if ($len == $config['len']) {
+        // 文字数を満たした場合、チェックスクリプトに渡す
+        exec_chk($password);
+    } else {
+        // 辞書からランダムな1つを追加
+        $w=$ytoa[rand(0, count($ytoa) - 1)];
+        $password_new=$password.$w;
+        build_password($password_new);
     }
-    ***/
-    }
+
 }
