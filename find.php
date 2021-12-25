@@ -30,8 +30,6 @@ while (true) {
  build_password($PASSWORD, strlen($PASSWORD));
 }
 
-exit;
-
 // ---
 // Functions
 
