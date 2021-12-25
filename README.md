@@ -22,17 +22,24 @@ Install g++, php7-cli.
 % chmod +x ./watch.sh
 ``` 
 
-## How to use
+## 使い方
 
-### Configure
-edit `find.php`
+### 設定ファイルの修正
+`config.php`を編集し、探索に必要な設定をおこないます。
+- パスワードの文字数
+- 探索中のパスワード表示
+- マルチコアについての設定
+- 辞書ファイルの指定
+- チェック用スクリプトの指定
+- デバッグモード（動作のトレース）
 
-### Run Miner
+### 探索の実行
 `% php ./find.php`
 
-(option)  
-add Prefix.  
-`% php ./find.php <Password Prefix>`
+### Prefix, Suffixの指定
+`% php ./find.php <Prefix> <Suffix>`  
+Suffixのみ指定する場合、Prefixを`""`で埋めます    
+`% php ./find.php "" <Suffix>`
 
 ### Run Hashing Tool
 `% ./yokai02 <PASSWORD>`  
