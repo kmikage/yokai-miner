@@ -7,106 +7,91 @@
 // Configration
 
 // パスワードの文字数
-$config['length']       = 14;
+$config['len']  = 14;
 // デバッグ表示
-$config['debug']        = false;
+$config['view'] = false;
 // チェックの処理をバックグラウンドで実行
-$config['background']   = true;
-
-// build ytoa array
-$ytoa=build_ytoa();
+$config['bg']   = true;
 
 // ---
-// First PASSWORD form option.
-$PASSWORD='';
-if ( $argc == 2 ) $PASSWORD=$argv[1];
+// コンフィグのロード
+require_once('./config.php');
 
-while (true) {
- # kick build password
- build_password($PASSWORD, strlen($PASSWORD));
+// ---
+// 辞書の構築
+require_once($config['dicfile']);
+$ytoa=build_ytoa();
+
+
+// ---
+// get Prefix and Suffix
+
+// Prefix
+if (isset($argv[1])) {
+    $input['prefix'] = $argv[1];
+} else {
+    $input['prefix'] = '';
 }
 
-exit;
+// Suffix
+if (isset($argv[2])) {
+    $input['suffix'] = $argv[2];
+} else {
+    $input['suffix'] = '';
+}
+
+// ---
+// 探索（無限ループ）
+while (true) {
+ # kick build password
+ build_password($input['prefix']);
+}
 
 // ---
 // Functions
 
-function exec_chk($PASSWORD) {
+function exec_chk($password) {
     global $config;
 
     // for Debug.
-    if($config['debug']) echo ('Testing -> '. $PASSWORD .'('. strlen($PASSWORD) .')'. "\n");
+    if($config['view']) echo ('Testing -> '. $password .'('. strlen($password) .')'. "\n");
 
-    // Kick checker
-    if($config['background']) {
-        exec ('./chk.sh '.$PASSWORD. '&' ); // for background
+    if($config['bg']) {
+        // background
+        exec ($config['chk'] . ' ' . $password . '&' );
     } else {
-        exec ('./chk.sh '.$PASSWORD );} // for foreground
+        // foreground
+        exec ($config['chk'] . ' ' . $password );
 }
 
-function build_password($PASSWORD, $len){
+function build_password($password) {
     global $ytoa;
     global $config;
-    if (strlen($PASSWORD) == $config['length']) {
-        exec_chk($PASSWORD);
+    global $input;
+
+    $password_len = strlen($password);
+
+    // for Debug
+    if($config['debug']) echo ('Testing -> '. $password .'('. strlen($password) .')'. "\n");
+
+
+    if ($password_len == $config['len']) {
+        // 文字数を満たした場合、チェックスクリプトに渡す
+        exec_chk($password);
     } else {
-        $w=$ytoa[rand(0, count($ytoa) - 1)];
-        $PASSWORDn=$PASSWORD.$w;
-        build_password($PASSWORDn, $len + 1);
+        // 辞書からランダムな1つを追加
+        while(true) {
+            if ( ($password_len + strlen($input['suffix'])) == $config['len'] ) {
+                $w=$input['suffix'];
+            } else {
+                $w=$ytoa[rand(0, count($ytoa) - 1)];
+            }
+            // 複数文字の対応
+            if (($password_len + strlen($w)) <= $config['len']) break;
+        }
 
-    /*** 総当たり用
-    foreach ($ytoa as $w) {
-        $PASSWORDn=$PASSWORD.$w;
-        build_password($PASSWORDn, $len + 1);
+        $password_new=$password.$w;
+        build_password($password_new);
     }
-    ***/
-    }
-}
 
-
-function build_ytoa() {
-    $ytoa[]="A";
-    $ytoa[]="B";
-    $ytoa[]="C";
-    $ytoa[]="D";
-    $ytoa[]="E";
-    $ytoa[]="F";
-    $ytoa[]="G";
-    $ytoa[]="H";
-    $ytoa[]="I";
-    $ytoa[]="J";
-    $ytoa[]="K";
-    $ytoa[]="L";
-    $ytoa[]="M";
-    $ytoa[]="N";
-    $ytoa[]="O";
-    $ytoa[]="P";
-    $ytoa[]="Q";
-    $ytoa[]="R";
-    $ytoa[]="S";
-    $ytoa[]="T";
-    $ytoa[]="U";
-    $ytoa[]="V";
-    $ytoa[]="W";
-    $ytoa[]="X";
-    $ytoa[]="Y";
-    $ytoa[]="Z";
-    $ytoa[]="-";
-    $ytoa[]=".";
-    $ytoa[]="1";
-    $ytoa[]="2";
-    $ytoa[]="3";
-    $ytoa[]="4";
-    $ytoa[]="5";
-    $ytoa[]="6";
-    $ytoa[]="7";
-    $ytoa[]="8";
-    $ytoa[]="9";
-    $ytoa[]="0";
-    $ytoa[]="!";
-    $ytoa[]="n";
-    $ytoa[]="m";
-    $ytoa[]="c";
-
-    return($ytoa);
 }
