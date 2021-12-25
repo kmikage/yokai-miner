@@ -80,7 +80,12 @@ if(true) echo ('Testing -> '. $password .'('. strlen($password) .')'. "\n");
     } else {
         // 辞書からランダムな1つを追加
         while(true) {
-            $w=$ytoa[rand(0, count($ytoa) - 1)];
+            if ( ($password_len + strlen($input['suffix'])) == $config['len'] ) {
+                $w=$input['suffix'];
+            } else {
+                $w=$ytoa[rand(0, count($ytoa) - 1)];
+            }
+            // 複数文字の対応
             if (($password_len + strlen($w)) <= $config['len']) break;
         }
 
