@@ -18,5 +18,8 @@ $config['bg']   = true;
 // 辞書ファイル名
 $config['dicfile'] = './dic.php';
 
+// チェック用スクリプト
+$config['chk'] = './chk.sh';
+
 // デバッグモード
-$config['debug'] = true;
+$config['debug'] = false;

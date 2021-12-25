@@ -58,10 +58,10 @@ function exec_chk($password) {
 
     if($config['bg']) {
         // background
-        exec ('./chk.sh '.$password. '&' );
+        exec ($config['chk'] . ' ' . $password . '&' );
     } else {
         // foreground
-        exec ('./chk.sh '.$password );}
+        exec ($config['chk'] . ' ' . $password );
 }
 
 function build_password($password) {
