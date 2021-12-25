@@ -62,6 +62,7 @@ function exec_chk($password) {
     } else {
         // foreground
         exec ($config['chk'] . ' ' . $password );
+    }
 }
 
 function build_password($password) {
